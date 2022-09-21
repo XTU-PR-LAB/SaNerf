@@ -600,6 +600,8 @@ def config_parser():
                         help='frequency of tensorboard image logging')
     parser.add_argument("--i_weights", type=int, default=10000,  #10000
                         help='frequency of weight ckpt saving')
+    parser.add_argument("--i_predicted_pose", type=int, default=2000,  #10000
+                        help='frequency of predicted pose saving')
     parser.add_argument("--i_testset", type=int, default=50000, 
                         help='frequency of testset saving')
     parser.add_argument("--i_video",   type=int, default=50000, 
@@ -1022,7 +1024,7 @@ def train():
                         'optimizer_state_dict': optimizer.state_dict(),
                     }, path)
             print('Saved checkpoints at', path)
-            
+        if i%args.i_predicted_pose==0:    
             if args.predict_test_pose:
                 predicted_poses_name = os.path.join(basedir, expname, 'predicted_poses_{:07d}.txt'.format(i))
                 save_predicted_pose(predicted_poses_name, poses[:, :3,:4])
